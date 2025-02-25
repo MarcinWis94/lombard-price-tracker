@@ -2,15 +2,14 @@ from django.db import models
 
 
 class Produkt(models.Model):
-    produkt_id = models.CharField(primary_key=True, max_length=32)
+    produkt_id = models.CharField(max_length=255, primary_key=True)
     nazwa = models.CharField(max_length=255)
     cena = models.CharField(max_length=50)
     lokalizacja = models.CharField(max_length=255)
     stan = models.CharField(max_length=100)
-    link = models.CharField(max_length=200)
+    link = models.URLField()
     kategoria = models.CharField(max_length=100)
     data_pobrania = models.DateField()
-    historia_cen = models.TextField(null=True, blank=True)
 
 
     def __str__(self):
@@ -18,3 +17,9 @@ class Produkt(models.Model):
 
     class Meta:
         db_table = "produkty"
+        
+
+class HistoriaCen(models.Model):
+    produkt = models.ForeignKey(Produkt, on_delete=models.CASCADE)
+    cena = models.CharField(max_length=50)
+    data_zmiany = models.DateField()

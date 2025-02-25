@@ -6,6 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="7e00d333-3aea-47b3-bba1-eb08632ae9ce" name="Changes" comment="Podstawa">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/loombard/loombard_products.db" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/loombard/loombard_products.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/loombard_products.db" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/loombard_products.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/produkty/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/produkty/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/produkty/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/produkty/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/templates/produkty/lista_produktow.html" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/templates/produkty/lista_produktow.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard_products.db" beforeDir="false" afterPath="$PROJECT_DIR$/loombard_products.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,25 +32,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.scratch.executor": "Run",
-    "Python.scratch1.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Marcin/Desktop/Projekty/lombard-price-tracker/lombard-price-tracker/lombard-price-tracker",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scratch1.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Marcin/Desktop&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Python"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Python&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Marcin\Desktop" />
+      <recent name="C:\Users\Marcin\Desktop\Projekty\lombard-price-tracker" />
       <recent name="C:\Users\Marcin\Desktop\Projekty\lombard-price-tracker\lombard-price-tracker\lombard-price-tracker" />
     </key>
   </component>

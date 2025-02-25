@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+    <meta charset="UTF-8">
     <title>Lista Produktów</title>
 </head>
 <body>
@@ -24,7 +25,9 @@
             <td>{{ produkt.stan }}</td>
             <td>{{ produkt.kategoria }}</td>
             <td>{{ produkt.data_pobrania }}</td>
-            <td>{{ produkt.historia_cen }}</td>
+            <td>
+                <a href="{% url 'historia_cen' produkt.produkt_id %}" target="_blank">Zobacz historię</a>
+            </td>
             <td><a href="{{ produkt.link }}" target="_blank">Zobacz</a></td>
         </tr>
         {% endfor %}
