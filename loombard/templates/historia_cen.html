@@ -1,0 +1,13 @@
+<h2>Historia cen dla {{ produkt.nazwa }}</h2>
+<table>
+    <tr>
+        <th>Data zmiany</th>
+        <th>Cena</th>
+    </tr>
+    {% for wpis in historia %}
+    <tr>
+        <td>{{ wpis.data_zmiany }}</td>
+        <td>{{ wpis.cena }}</td>
+    </tr>
+    {% endfor %}
+</table>
