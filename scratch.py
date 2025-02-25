@@ -1,3 +1,4 @@
+import sqlite3
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -15,11 +16,26 @@ options.add_argument("--no-sandbox")
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
+# Połączenie z bazą danych
+conn = sqlite3.connect("loombard_products.db")
+cursor = conn.cursor()
+
+# Tworzenie tabeli, jeśli nie istnieje
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS produkty (
+    nazwa TEXT PRIMARY KEY,
+    cena TEXT,
+    lokalizacja TEXT,
+    stan TEXT,
+    link TEXT
+)
+""")
+conn.commit()
+
 # Główna kategoria elektroniki
 base_url = "https://www.loombard.pl/categories/elektronika-MDn0gF"
 MAX_PAGES = 3  # Pobieramy tylko 3 strony
 page = 1
-all_products = []
 
 while page <= MAX_PAGES:
     url = f"{base_url}?page={page}"
@@ -50,14 +66,24 @@ while page <= MAX_PAGES:
         link_tag = title_tag.find("a") if title_tag else None
         link = "https://www.loombard.pl" + link_tag["href"] if link_tag else "Brak linku"
 
-        all_products.append((name, price, link))
+        location_tag = product.find("p", class_="product-desc")
+        location = location_tag.text.strip().replace("Lokalizacja: ", "") if location_tag else "Brak lokalizacji"
 
+        condition_tag = product.find_all("p", class_="product-desc")
+        condition = condition_tag[1].text.strip().replace("Stan: ", "") if len(condition_tag) > 1 else "Brak stanu"
+
+        # Zapisywanie danych do bazy danych
+        cursor.execute("""
+        INSERT OR REPLACE INTO produkty (nazwa, cena, lokalizacja, stan, link) 
+        VALUES (?, ?, ?, ?, ?)
+        """, (name, price, location, condition, link))
+
+    conn.commit()  # Zapisujemy zmiany do bazy
     print(f"\U0001F50D Znaleziono {len(products)} produktów na stronie {page}.")
     page += 1  # Przechodzimy do następnej strony
 
-# Zatrzymujemy Selenium
+# Zatrzymujemy Selenium i zamykamy połączenie z bazą
 driver.quit()
+conn.close()
 
-# Wyświetlamy wyniki
-for product in all_products:
-    print(f"Nazwa: {product[0]}, Cena: {product[1]}, Link: {product[2]}")
+print("\U0001F4BE Dane zostały zapisane do bazy danych!")
