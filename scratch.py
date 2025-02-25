@@ -1,10 +1,13 @@
 import sqlite3
+import datetime
+import json
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
+import hashlib  # Do generowania unikalnego produkt_id
 
 # Konfiguracja Selenium
 options = Options()
@@ -20,15 +23,18 @@ driver = webdriver.Chrome(service=service, options=options)
 conn = sqlite3.connect("loombard_products.db")
 cursor = conn.cursor()
 
-# Tworzenie tabeli, jeśli nie istnieje
+# Tworzenie tabeli (z nową kolumną historia_cen)
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS produkty (
-    nazwa TEXT PRIMARY KEY,
+    produkt_id TEXT PRIMARY KEY, 
+    nazwa TEXT,
     cena TEXT,
+    historia_cen TEXT DEFAULT '{}',
     lokalizacja TEXT,
     stan TEXT,
+    link TEXT,
     kategoria TEXT,
-    link TEXT
+    data_pobrania TEXT
 )
 """)
 conn.commit()
@@ -45,6 +51,8 @@ categories = {
 }
 
 MAX_PAGES = 3  # Liczba stron do przeszukania
+today = datetime.date.today().strftime("%Y-%m-%d")  # Dzisiejsza data
+current_week = datetime.date.today().isocalendar()[1]  # Numer tygodnia
 
 for category_name, base_url in categories.items():
     print(f"\n🔍 Przeszukuję kategorię: {category_name}")
@@ -84,11 +92,49 @@ for category_name, base_url in categories.items():
             condition_tag = product.find_all("p", class_="product-desc")
             condition = condition_tag[1].text.strip().replace("Stan: ", "") if len(condition_tag) > 1 else "Brak stanu"
 
-            # Zapisywanie danych do bazy danych z informacją o kategorii
-            cursor.execute("""
-            INSERT OR REPLACE INTO produkty (nazwa, cena, lokalizacja, stan, link, kategoria) 
-            VALUES (?, ?, ?, ?, ?, ?)
-            """, (name, price, location, condition, link, category_name))
+            # Generowanie unikalnego produkt_id na podstawie nazwy i lokalizacji
+            product_id = hashlib.md5((name + location).encode()).hexdigest()
+
+            # Sprawdzenie, czy produkt już istnieje
+            cursor.execute("SELECT cena, historia_cen FROM produkty WHERE produkt_id = ?", (product_id,))
+            existing_product = cursor.fetchone()
+
+            if existing_product:
+                existing_price, price_history_json = existing_product
+
+                # Konwersja historii cen z JSON do słownika
+                price_history = json.loads(price_history_json) if price_history_json else {}
+
+                if existing_price == price:
+                    print(f"✅ Cena produktu {name} się nie zmieniła.")
+                else:
+                    # Sprawdzenie, czy cena zmienia się w nowym tygodniu
+                    last_week = max([int(week) for week in price_history.keys()], default=0)
+                    if current_week > last_week:
+                        price_history[str(current_week)] = existing_price
+                        updated_price_history_json = json.dumps(price_history)
+
+                        # Aktualizacja wpisu
+                        cursor.execute("""
+                        UPDATE produkty SET cena = ?, historia_cen = ?, data_pobrania = ? WHERE produkt_id = ?
+                        """, (price, updated_price_history_json, today, product_id))
+
+                        print(f"♻️ Cena zmieniła się dla {name}! Poprzednia cena: {existing_price} → Nowa: {price}")
+                    else:
+                        # Aktualizacja tylko ceny i daty pobrania
+                        cursor.execute("""
+                        UPDATE produkty SET cena = ?, data_pobrania = ? WHERE produkt_id = ?
+                        """, (price, today, product_id))
+                        print(f"🔄 Cena zaktualizowana w tym samym tygodniu: {name}")
+
+            else:
+                # Nowy produkt - dodajemy do bazy
+                initial_price_history = json.dumps({})  # Pusta historia cen
+                cursor.execute("""
+                INSERT INTO produkty (produkt_id, nazwa, cena, historia_cen, lokalizacja, stan, link, kategoria, data_pobrania) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (product_id, name, price, initial_price_history, location, condition, link, category_name, today))
+                print(f"➕ Dodano nowy produkt: {name}")
 
         conn.commit()  # Zapisujemy zmiany do bazy
         print(f"\U0001F50D Znaleziono {len(products)} produktów na stronie {page}.")

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista Produktów</title>
+</head>
+<body>
+    <h1>Produkty w Lombardzie</h1>
+    <table border="1">
+        <tr>
+            <th>Nazwa</th>
+            <th>Cena</th>
+            <th>Lokalizacja</th>
+            <th>Stan</th>
+            <th>Kategoria</th>
+            <th>Data pobrania</th>
+            <th>Historia cen</th>
+            <th>Link</th>
+        </tr>
+        {% for produkt in produkty %}
+        <tr>
+            <td>{{ produkt.nazwa }}</td>
+            <td>{{ produkt.cena }}</td>
+            <td>{{ produkt.lokalizacja }}</td>
+            <td>{{ produkt.stan }}</td>
+            <td>{{ produkt.kategoria }}</td>
+            <td>{{ produkt.data_pobrania }}</td>
+            <td>{{ produkt.historia_cen }}</td>
+            <td><a href="{{ produkt.link }}" target="_blank">Zobacz</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
