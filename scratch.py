@@ -27,60 +27,71 @@ CREATE TABLE IF NOT EXISTS produkty (
     cena TEXT,
     lokalizacja TEXT,
     stan TEXT,
+    kategoria TEXT,
     link TEXT
 )
 """)
 conn.commit()
 
-# Główna kategoria elektroniki
-base_url = "https://www.loombard.pl/categories/elektronika-MDn0gF"
-MAX_PAGES = 3  # Pobieramy tylko 3 strony
-page = 1
+# Lista kategorii do przeszukania
+categories = {
+    "RTV i AGD": "https://www.loombard.pl/categories/rtv-i-agd-j9WGej?",
+    "Laptopy": "https://www.loombard.pl/categories/laptopy-iPpDk9?",
+    "Głośniki": "https://www.loombard.pl/categories/glosniki-9MhYyr?",
+    "Aparaty cyfrowe": "https://www.loombard.pl/categories/aparaty-cyfrowe-oEc6i6?",
+    "Konsole i automaty": "https://www.loombard.pl/categories/konsole-i-automaty-iLQlqa?",
+    "Smartfony": "https://www.loombard.pl/categories/smartfony-i-telefony-komorkowe-WDK5Fy?",
+    "Smartwatche": "https://www.loombard.pl/categories/smartwatche-Z9ALnj?"
+}
 
-while page <= MAX_PAGES:
-    url = f"{base_url}?page={page}"
-    print(f"\U0001F4C4 Pobieram stronę {page}: {url}")
+MAX_PAGES = 3  # Liczba stron do przeszukania
 
-    # Otwieramy stronę i czekamy na załadowanie JS
-    driver.get(url)
-    time.sleep(3)
+for category_name, base_url in categories.items():
+    print(f"\n🔍 Przeszukuję kategorię: {category_name}")
 
-    # Pobieramy HTML
-    soup = BeautifulSoup(driver.page_source, "html.parser")
+    for page in range(1, MAX_PAGES + 1):
+        url = f"{base_url}page={page}"
+        print(f"\U0001F4C4 Pobieram stronę {page}: {url}")
 
-    # Znalezienie wszystkich produktów
-    products = soup.find_all("div", class_="product-item")
+        # Otwieramy stronę i czekamy na załadowanie JS
+        driver.get(url)
+        time.sleep(3)
 
-    if not products:
-        print("❌ Brak więcej produktów, kończę.")
-        break
+        # Pobieramy HTML
+        soup = BeautifulSoup(driver.page_source, "html.parser")
 
-    # Pobieranie danych z każdego produktu
-    for product in products:
-        title_tag = product.find("h2", class_="product-title")
-        name = title_tag.text.strip() if title_tag else "Brak nazwy"
+        # Znalezienie wszystkich produktów
+        products = soup.find_all("div", class_="product-item")
 
-        price_tag = product.find("p", class_="product-value")
-        price = price_tag.text.strip() if price_tag else "Brak ceny"
+        if not products:
+            print("❌ Brak więcej produktów, przechodzę do następnej kategorii.")
+            break
 
-        link_tag = title_tag.find("a") if title_tag else None
-        link = "https://www.loombard.pl" + link_tag["href"] if link_tag else "Brak linku"
+        # Pobieranie danych z każdego produktu
+        for product in products:
+            title_tag = product.find("h2", class_="product-title")
+            name = title_tag.text.strip() if title_tag else "Brak nazwy"
 
-        location_tag = product.find("p", class_="product-desc")
-        location = location_tag.text.strip().replace("Lokalizacja: ", "") if location_tag else "Brak lokalizacji"
+            price_tag = product.find("p", class_="product-value")
+            price = price_tag.text.strip() if price_tag else "Brak ceny"
 
-        condition_tag = product.find_all("p", class_="product-desc")
-        condition = condition_tag[1].text.strip().replace("Stan: ", "") if len(condition_tag) > 1 else "Brak stanu"
+            link_tag = title_tag.find("a") if title_tag else None
+            link = "https://www.loombard.pl" + link_tag["href"] if link_tag else "Brak linku"
 
-        # Zapisywanie danych do bazy danych
-        cursor.execute("""
-        INSERT OR REPLACE INTO produkty (nazwa, cena, lokalizacja, stan, link) 
-        VALUES (?, ?, ?, ?, ?)
-        """, (name, price, location, condition, link))
+            location_tag = product.find("p", class_="product-desc")
+            location = location_tag.text.strip().replace("Lokalizacja: ", "") if location_tag else "Brak lokalizacji"
 
-    conn.commit()  # Zapisujemy zmiany do bazy
-    print(f"\U0001F50D Znaleziono {len(products)} produktów na stronie {page}.")
-    page += 1  # Przechodzimy do następnej strony
+            condition_tag = product.find_all("p", class_="product-desc")
+            condition = condition_tag[1].text.strip().replace("Stan: ", "") if len(condition_tag) > 1 else "Brak stanu"
+
+            # Zapisywanie danych do bazy danych z informacją o kategorii
+            cursor.execute("""
+            INSERT OR REPLACE INTO produkty (nazwa, cena, lokalizacja, stan, link, kategoria) 
+            VALUES (?, ?, ?, ?, ?, ?)
+            """, (name, price, location, condition, link, category_name))
+
+        conn.commit()  # Zapisujemy zmiany do bazy
+        print(f"\U0001F50D Znaleziono {len(products)} produktów na stronie {page}.")
 
 # Zatrzymujemy Selenium i zamykamy połączenie z bazą
 driver.quit()
