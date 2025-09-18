@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e00d333-3aea-47b3-bba1-eb08632ae9ce" name="Changes" comment="Podstawa">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loombard/loombard/loombard_products.db" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/loombard/loombard_products.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loombard/loombard_products.db" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/loombard_products.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loombard/produkty/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/produkty/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loombard/produkty/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/produkty/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loombard/templates/produkty/lista_produktow.html" beforeDir="false" afterPath="$PROJECT_DIR$/loombard/templates/produkty/lista_produktow.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/loombard/loombard_products.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/loombard_products.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/templates/historia_cen.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/templates/lista_produktow.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/templates/produkty/historia_cen.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loombard/templates/produkty/lista_produktow.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/loombard_products.db" beforeDir="false" afterPath="$PROJECT_DIR$/loombard_products.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
     </list>
@@ -23,6 +25,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -34,6 +39,9 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.database.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scraper.executor&quot;: &quot;Run&quot;,
     &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
     &quot;Python.scratch1.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -96,7 +104,23 @@
       <option name="project" value="LOCAL" />
       <updated>1740472037668</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Podstawa">
+      <option name="closed" value="true" />
+      <created>1740506655581</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740506655581</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Podstawa">
+      <option name="closed" value="true" />
+      <created>1740506671526</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740506671526</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
